@@ -9,7 +9,19 @@ class CategoriaSerializer(serializers.Serializer):
         return Autor.objects.create(**validated_data) # pylint: disable=no-member
     def update(self, instance, validated_data):
         instance.nome = validated_data.get('nome', instance.nome)
-        instance.save
+        instance.save()
+        return instance
+        
+class AutorSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    nome = serializers.CharField(max_length=100)
+
+    def create(self, validated_data):
+        return Autor.objects.create(**validated_data) # pylint: disable=no-member
+
+    def update(self, instance, validated_data):
+        instance.nome = validated_data.get('nome', instance.nome)
+        instance.save()
         return instance
 
 class LivroSerializer(serializers.Serializer):
@@ -29,4 +41,3 @@ class LivroSerializer(serializers.Serializer):
         instance.publicado_em = validated_data.get('publicado_em', instance.publicado_em)
         instance.save()
         return instance
-    
